@@ -10,6 +10,7 @@ import SpriteKit
 
 class Tile {
     
+    var flagged: Bool
     let mine: Bool
     var adjacentMines: Int
     
@@ -25,5 +26,6 @@ class Tile {
         self.adjacentMines = adjacentMines
         self.row = row
         self.column = column
+        self.flagged = false
     }
 }

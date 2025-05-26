@@ -10,10 +10,15 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    var level: Level!
+    var level: Level! {
+        didSet {
+            numRows = level.numRows
+            numColumns = level.numColumns
+        }
+    }
     
     let tileWidth: CGFloat = 32.0
-    let tileHeight: CGFloat = 36.0
+    let tileHeight: CGFloat = 32.0
     
     let gameLayer = SKNode()
     let tilesLayer = SKNode()
@@ -24,16 +29,27 @@ class GameScene: SKScene {
     var tappedColumn: Int?
     var tappedRow: Int?
     
-    var visibleTiles: Int = 0
+    let plantingFlagAlpha: CGFloat = 0.8
+    
+    var plantingFlag: Bool = false {
+        didSet {
+            if plantingFlag {
+                setTileSpritesInFlagSettingMode()
+                
+            }
+            else {
+                setTileSpritesNormal()
+            }
+        }
+    }
+    
+    var tapHandler: ((Tile) -> ())?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
     }
     
-    init(size: CGSize, numRows: Int, numColumns: Int) {
-        self.numRows = numRows
-        self.numColumns = numColumns
-        
+    override init(size: CGSize) {
         super.init(size: size)
         
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -52,52 +68,110 @@ class GameScene: SKScene {
         gameLayer.addChild(tilesLayer)
     }
     
+    
+    func setTileSpritesInFlagSettingMode() {
+        level.getAllTiles().forEach {
+            tile in
+            if !tile.flagged {
+                tile.sprite?.alpha = plantingFlagAlpha
+            }
+        }
+    }
+    
+    func setTileSpritesNormal() {
+        level.getAllTiles().forEach { $0.sprite?.alpha = 1}
+    }
+    
     func addSprites(for tiles: Array2D<Tile>) {
+        tilesLayer.removeAllChildren()
+        plantingFlag = false
         
         for tile in tiles.array {
-            //print("Mine:\(tile?.mine)  column: \(tile?.column)  row: \(tile?.row) adjacent: \(tile?.adjacentMines)")
             guard let tile = tile else {
                 continue
             }
-            let sprite = SKSpriteNode(color:determineSpriteColour(tile: tile), size: CGSize(width: tileWidth, height: tileHeight))
+            let sprite = SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue)
             sprite.position = pointFor(column: tile.column, row: tile.row)
             tilesLayer.addChild(sprite)
             tile.sprite = sprite
         }
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
+        guard let touch = touches.first else {
+            return
+        }
         let location = touch.location(in: tilesLayer)
         
         let (success, column, row) = convertPoint(location)
         if success {
-            // 3
             if let tile = level.tileAt(column: column, row: row) {
-                // 4
-                tappedColumn = column
-                tappedRow = row
                 tileSpriteTapped(tile: tile)
             }
         }
+    }
+    
+    func gameOver() {
+        showAllMines()
+    }
+    
+    private func showAllMines() {
+        level.getAllTiles().forEach({
+            tile in
+            if tile.mine {
+                tile.sprite?.color = .black
+            }
+        })
     }
     
     private func tileSpriteTapped(tile:Tile) {
         if tile.visible {
             return
         }
-        tile.visible = true
-        let sprite = tile.sprite
-        sprite?.color = determineSpriteColour(tile: tile)
-        visibleTiles+=1
-        if tile.adjacentMines == 0 {
-            updateTilesForTileWithNoAdjacentMines(tile: tile)
+        
+        if plantingFlag {
+            setFlagForTile(tile: tile)
+            return
         }
         
+        if tile.flagged {
+            return
+        }
+        tile.visible = true
+        let newSprite = determineSprite(tile: tile)
+        replaceSpriteInTile(tile: tile, newSprite: newSprite)
+        
+        
+        if tile.adjacentMines == 0 && !tile.mine {
+            updateTilesForTileWithNoAdjacentMines(tile: tile)
+        }
+        tapHandler?(tile)
+    }
+    
+    private func replaceSpriteInTile(tile: Tile, newSprite: SKSpriteNode) {
+        newSprite.position = pointFor(column: tile.column, row: tile.row)
+        if let oldSprite = tile.sprite {
+            tilesLayer.removeChildren(in: [oldSprite])
+        }
+        tile.sprite = newSprite
+        tilesLayer.addChild(newSprite)
+    }
+    
+    private func setFlagForTile(tile: Tile) {
+        tile.flagged.toggle()
+        if tile.flagged {
+            let newSprite = SKSpriteNode(imageNamed: SpriteTileName.flagTile.rawValue)
+            replaceSpriteInTile(tile: tile, newSprite: newSprite)
+        }
+        else {
+            let newSprite = determineSprite(tile: tile)
+            replaceSpriteInTile(tile: tile, newSprite: newSprite)
+        }
     }
     
     private func updateTilesForTileWithNoAdjacentMines(tile: Tile) {
-        let adjacentTileCoords = Helpers.getAdjacentTileCoords(row: tile.row, column: tile.column)
+        let adjacentTileCoords = Helpers.getAdjacentTileCoords(column: tile.column, row: tile.row, maxColumns: numColumns, maxRows: numRows)
         adjacentTileCoords.forEach {
             coord in
             if let tile = level.tileAt(column: coord.0, row: coord.1), !tile.visible {
@@ -106,30 +180,31 @@ class GameScene: SKScene {
         }
     }
     
-    private func determineSpriteColour(tile: Tile) -> UIColor {
+    private func determineSprite(tile: Tile) -> SKSpriteNode {
         if !tile.visible {
-            return .gray
+            return SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue)
+
         }
         if tile.mine {
-            return .black
+            return SKSpriteNode(color: .black, size: CGSize(width: tileWidth, height: tileHeight))
         }
         switch tile.adjacentMines {
         case 0:
-            return .lightGray
+            return SKSpriteNode(imageNamed: SpriteTileName.emptyTile.rawValue)
         case 1:
-            return .blue
+            return SKSpriteNode(color: .blue, size: CGSize(width: tileWidth, height: tileHeight))
         case 2:
-            return .green
+            return SKSpriteNode(color: .green, size: CGSize(width: tileWidth, height: tileHeight))
         case 3:
-            return .red
+            return SKSpriteNode(color: .red, size: CGSize(width: tileWidth, height: tileHeight))
         case 4:
-            return .purple
+            return SKSpriteNode(color: .purple, size: CGSize(width: tileWidth, height: tileHeight))
         case 5:
-            return .brown
+            return  SKSpriteNode(color: .brown, size: CGSize(width: tileWidth, height: tileHeight))
         case 6:
-            return .darkGray
+            return SKSpriteNode(color: .darkGray, size: CGSize(width: tileWidth, height: tileHeight))
         default:
-            return .gray
+            return SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue)
         }
     }
     
@@ -148,4 +223,11 @@ class GameScene: SKScene {
             return (false, 0, 0)  // invalid location
         }
     }
+}
+
+
+enum SpriteTileName: String {
+    case baseTile = "BaseTile"
+    case emptyTile = "EmptyTile"
+    case flagTile = "YellowFlagTile"
 }

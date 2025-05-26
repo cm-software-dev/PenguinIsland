@@ -8,9 +8,24 @@
 class Level {
     let numColumns: Int
     let numRows: Int
-    private let mines: Int
+    let mines: Int
     
     private var tiles: Array2D<Tile>
+    
+    var visibleTiles: Int  {
+        var total = 0
+        tiles.array.forEach({tile in
+            if let tile = tile, tile.visible {
+                total += 1
+            }
+        })
+        return total
+    }
+    
+    var gameOver: Bool = false
+    var victory: Bool = false
+    
+    var correctFlags: Int = 0
     
     init(numColumns: Int, numRows: Int, mines: Int) {
         self.numColumns = numColumns
@@ -19,6 +34,7 @@ class Level {
         tiles = Array2D<Tile>(columns: numColumns, rows: numRows)
     }
     
+    
     func tileAt(column: Int, row: Int) -> Tile? {
       precondition(column >= 0 && column < numColumns)
       precondition(row >= 0 && row < numRows)
@@ -26,18 +42,19 @@ class Level {
     }
     
     func layMines() ->  Array2D<Tile> {
+        gameOver = false
+        tiles = Array2D<Tile>(columns: numColumns, rows: numRows)
         var mineIndices = Set<Int>()
         while mineIndices.count < mines {
             mineIndices.insert(Int.random(in: 0..<numRows*numColumns))
         }
-        print ("mine indices")
-        print(mineIndices)
+
         for row in 0..<numRows {
             for column in 0..<numColumns {
                 let index = row * numColumns + column
                 if mineIndices.contains(index) {
                     tiles.addAtIndex(index, item: Tile(mine:true, adjacentMines: 0, column: column, row: row))
-                    setAdjacentMinesFor(row: row, column: column)
+                    setAdjacentMinesFor(column: column, row: row)
                 }
                 else if tiles[column, row] == nil {
                     tiles[column, row] = Tile(mine: false, adjacentMines: 0, column: column, row: row)
@@ -47,16 +64,20 @@ class Level {
         return tiles
     }
     
-    private func setAdjacentMinesFor(row: Int, column: Int) {
-        let adjacentTileCoords = Helpers.getAdjacentTileCoords(row: row, column: column)
+    func getAllTiles() -> [Tile] {
+        return tiles.array.compactMap{$0}
+    }
+    
+    private func setAdjacentMinesFor( column: Int, row: Int) {
+        let adjacentTileCoords = Helpers.getAdjacentTileCoords(column: column, row: row, maxColumns: numColumns, maxRows: numRows)
         
         adjacentTileCoords.forEach {
-            if ($0.0 >= 0 && $0.0 < numRows && $0.1 >= 0 && $0.1 < numColumns) {
-                if tiles[$0.1,$0.0] == nil {
-                    tiles[$0.1,$0.0] = Tile(mine: false, adjacentMines: 1, column: $0.1, row: $0.0)
+            if ($0.0 >= 0 && $0.0 < numColumns && $0.1 >= 0 && $0.1 < numRows) {
+                if tiles[$0.0,$0.1] == nil {
+                    tiles[$0.0,$0.1] = Tile(mine: false, adjacentMines: 1, column: $0.0, row: $0.1)
                 }
                 else {
-                    tiles[$0.1,$0.0]?.adjacentMines+=1
+                    tiles[$0.0,$0.1]?.adjacentMines+=1
                 }
             }
         }
