@@ -10,27 +10,53 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    
+    var level: Level!
+    var scene: GameScene!
+    
+    private var tapFromColumn: Int?
+    private var tapFromRow: Int?
+    
+    let numRows: Int = 16
+    let numColumns: Int = 9
+    let numMines = 15
+    
+    @IBOutlet weak var tryAgainButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let view = self.view as! SKView? {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-                
-                // Present the scene
-                view.presentScene(scene)
-            }
-            
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
+        // Configure the view
+        let skView = view as! SKView
+        skView.isMultipleTouchEnabled = false
+        tryAgainButton.isHidden = true
+        
+        // Create and configure the scene.
+        scene = GameScene(size: skView.bounds.size, numRows: numRows, numColumns: numColumns)
+        scene.scaleMode = .aspectFill
+        
+        level = Level(numColumns: numColumns, numRows: numRows, mines: numMines)
+        scene.level = level
+        
+        // Present the scene.
+        skView.presentScene(scene)
+        
+        beginGame()
     }
-
+    
+    func beginGame() {
+        layMines()
+    }
+    
+    func layMines() {
+        let newTiles = level.layMines()
+        scene.addSprites(for: newTiles)
+    }
+    
+    @IBAction func tryAgainPressed(_ sender: Any) {
+        beginGame()
+    }
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .allButUpsideDown
@@ -38,7 +64,7 @@ class GameViewController: UIViewController {
             return .all
         }
     }
-
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
