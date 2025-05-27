@@ -15,6 +15,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="BASEBLUE" translatesAutoresizingMaskIntoConstraints="NO" id="aBa-uJ-qkm">
+                                <rect key="frame" x="-107" y="-133" width="640" height="1136"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="HomeScreen" translatesAutoresizingMaskIntoConstraints="NO" id="TJr-2z-ERm">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
@@ -37,6 +41,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BASEBLUE" width="640" height="1136"/>
         <image name="HomeScreen" width="670" height="966"/>
     </resources>
 </document>

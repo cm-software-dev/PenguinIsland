@@ -44,6 +44,7 @@ class GameScene: SKScene {
     }
     
     var tapHandler: ((Tile) -> ())?
+    var flagPlantedHandler: ((Tile) -> ())?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
@@ -112,6 +113,21 @@ class GameScene: SKScene {
         }
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else {
+            return
+        }
+        let location = touch.location(in: tilesLayer)
+        
+        let (success, column, row) = convertPoint(location)
+        if success {
+            if let tile = level.tileAt(column: column, row: row),
+               let sprite = SKSpriteNode(fileNamed: SpriteTileName.baseTileTapped.rawValue ) {
+                replaceSpriteInTile(tile: tile, newSprite: sprite)
+            }
+        }
+    }
+    
     func gameOver() {
         showAllMines()
     }
@@ -168,6 +184,7 @@ class GameScene: SKScene {
             let newSprite = determineSprite(tile: tile)
             replaceSpriteInTile(tile: tile, newSprite: newSprite)
         }
+        flagPlantedHandler?(tile)
     }
     
     private func updateTilesForTileWithNoAdjacentMines(tile: Tile) {
@@ -192,17 +209,21 @@ class GameScene: SKScene {
         case 0:
             return SKSpriteNode(imageNamed: SpriteTileName.emptyTile.rawValue)
         case 1:
-            return SKSpriteNode(color: .blue, size: CGSize(width: tileWidth, height: tileHeight))
+            return SKSpriteNode(imageNamed: SpriteTileName.oneTile.rawValue)
         case 2:
-            return SKSpriteNode(color: .green, size: CGSize(width: tileWidth, height: tileHeight))
+            return SKSpriteNode(imageNamed: SpriteTileName.twoTile.rawValue)
         case 3:
-            return SKSpriteNode(color: .red, size: CGSize(width: tileWidth, height: tileHeight))
+            return SKSpriteNode(imageNamed: SpriteTileName.threeFile.rawValue)
         case 4:
-            return SKSpriteNode(color: .purple, size: CGSize(width: tileWidth, height: tileHeight))
+            return SKSpriteNode(imageNamed: SpriteTileName.fourTile.rawValue)
         case 5:
-            return  SKSpriteNode(color: .brown, size: CGSize(width: tileWidth, height: tileHeight))
+            return SKSpriteNode(imageNamed: SpriteTileName.fiveTile.rawValue)
         case 6:
-            return SKSpriteNode(color: .darkGray, size: CGSize(width: tileWidth, height: tileHeight))
+            return SKSpriteNode(imageNamed: SpriteTileName.sixTile.rawValue)
+        case 7:
+            return SKSpriteNode(imageNamed: SpriteTileName.sevenTile.rawValue)
+        case 8:
+            return SKSpriteNode(imageNamed: SpriteTileName.eightTile.rawValue)
         default:
             return SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue)
         }
@@ -230,4 +251,13 @@ enum SpriteTileName: String {
     case baseTile = "BaseTile"
     case emptyTile = "EmptyTile"
     case flagTile = "YellowFlagTile"
+    case oneTile = "OneTile"
+    case twoTile = "TwoTile"
+    case threeFile = "ThreeTile"
+    case fourTile = "FourTile"
+    case fiveTile = "FiveTile"
+    case sixTile = "SixTile"
+    case sevenTile = "SevenTile"
+    case eightTile = "EightTile"
+    case baseTileTapped = "BaseTileTapped"
 }
