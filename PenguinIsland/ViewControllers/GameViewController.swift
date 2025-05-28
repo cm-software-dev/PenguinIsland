@@ -12,21 +12,10 @@ import AVKit
 
 class GameViewController: UIViewController {
         
-    var level: Level!
+    
     var scene: GameScene!
     
-    private var tapFromColumn: Int?
-    private var tapFromRow: Int?
-    
-    let numRows: Int = 16
-    let numColumns: Int = 9
-    let numMines = 15
-    
-    private var flagsPlanted = 0 {
-        didSet {
-            flagsLabel.text = "\(numMines-flagsPlanted)"
-        }
-    }
+    private let viewModel = GameViewModel()
     
     @IBOutlet weak var flagsLabel: UILabel!
     @IBOutlet weak var gameOverImage: UIImageView!
@@ -83,6 +72,17 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.isHidden = true
+        
+        viewModel.didUpdateFlagsPlanted = {
+            (flagValue: Int) in
+            self.flagsLabel.text = "\(flagValue)"
+        }
+        
+        viewModel.haveVictory = showVictory
+        
+        flagsLabel.text = "\(viewModel.numMines)"
+        
         gameOverImage.isHidden = true
         tryAgainButton.setBackgroundImage(UIImage(named: "PlayAgainButton"), for: .selected)
         addFlagButton.setBackgroundImage(UIImage(named: "FlagButtonWithIconPressed"), for: .selected)
@@ -96,8 +96,8 @@ class GameViewController: UIViewController {
         scene = GameScene(size: skView.bounds.size)
         scene.scaleMode = .aspectFill
         
-        level = Level(numColumns: numColumns, numRows: numRows, mines: numMines)
-        scene.level = level
+        
+        scene.level = viewModel.level
         
         scene.tapHandler = handleTap(tile:)
         scene.flagPlantedHandler = handleFlagToggled(tile:)
@@ -114,50 +114,26 @@ class GameViewController: UIViewController {
     
     func handleTap(tile: Tile) {
         if tile.mine {
-            level.gameOver = true
+            viewModel.gameOver()
             scene.gameOver()
             showGameOver()
         }
-        checkVictory()
-    }
-    
-    private func checkVictory() {
-        
-        if (numRows * numColumns - level.visibleTiles) == level.mines {
-            level.victory = true
-            showVictory()
-        }
+        viewModel.checkVictory()
     }
     
     func handleFlagToggled(tile: Tile) {
-        let flag = tile.flagged
-        if flag {
-            flagsPlanted+=1
-        }
-        else {
-            flagsPlanted-=1
-        }
-        if tile.mine && flag {
-            level.correctFlags+=1
-        }
-        else if tile.mine && !flag {
-            level.correctFlags-=1
-        }
-        if level.correctFlags == level.mines {
-            level.victory = true
-            showVictory()
-        }
+        viewModel.handleFlagToggled(tile: tile)
     }
     
     
     private func showVictory() {
         backgroundMusic?.stop()
-        gameOverImage.image = UIImage(named: "VictoryWindow")
+        gameOverImage.image = UIImage(named: "VictoryWindowEgg")
         gameOverImage.isHidden = false
         scene.isUserInteractionEnabled = false
         tryAgainButton.isHidden = false
         addFlagButton.isHidden = true
-        scene.alpha = 0.6
+        scene.alpha = viewModel.gameEndAlpha
         //do something
     }
     
@@ -167,6 +143,8 @@ class GameViewController: UIViewController {
         gameOverImage.isHidden = false
         addFlagButton.isHidden = true
         backgroundMusic?.stop()
+        gameOverImage.image = UIImage(named: "GameOverEgg")
+        scene.alpha = viewModel.gameEndAlpha
     }
     
     func beginGame() {
@@ -176,13 +154,13 @@ class GameViewController: UIViewController {
     }
     
     private func resetValues() {
-        flagsPlanted = 0
+        viewModel.resetFlags()
         plantingFlag = false
         scene.plantingFlag = plantingFlag
     }
     
     private func layMines() {
-        let newTiles = level.layMines()
+        let newTiles = viewModel.layMines()
         scene.addSprites(for: newTiles)
     }
     
@@ -194,8 +172,8 @@ class GameViewController: UIViewController {
             backgroundMusic?.play()
         }
         scene.alpha = 1
-        level = Level(numColumns: numColumns, numRows: numRows, mines: numMines)
-        scene.level = level
+        
+        scene.level = viewModel.getNewLevel()
         beginGame()
     }
     
@@ -218,8 +196,15 @@ class GameViewController: UIViewController {
         playMusic.toggle()
     }
     
+    @IBAction func tapGameOverImage(_ sender: Any) {
+        gameOverImage.isHidden = true
+    }
+    
+    
     
     @IBAction func tapExitImage(_ sender: Any) {
+        exitButton.alpha = 0.7
+        self.navigationController?.popViewController(animated: true)
     }
     
     override var prefersStatusBarHidden: Bool {

@@ -46,6 +46,8 @@ class GameScene: SKScene {
     var tapHandler: ((Tile) -> ())?
     var flagPlantedHandler: ((Tile) -> ())?
     
+    var firstTap = true
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
     }
