@@ -34,19 +34,29 @@ class Level {
         tiles = Array2D<Tile>(columns: numColumns, rows: numRows)
     }
     
-    
     func tileAt(column: Int, row: Int) -> Tile? {
       precondition(column >= 0 && column < numColumns)
       precondition(row >= 0 && row < numRows)
       return tiles[column, row]
     }
     
-    func layMines() ->  Array2D<Tile> {
+    func layMines(_ safeIndex: Int? = nil) ->  Array2D<Tile> {
         gameOver = false
         tiles = Array2D<Tile>(columns: numColumns, rows: numRows)
         var mineIndices = Set<Int>()
         while mineIndices.count < mines {
-            mineIndices.insert(Int.random(in: 0..<numRows*numColumns))
+            if let safeIndex = safeIndex {
+                let newIndex = Int.random(in: 0..<numRows*numColumns)
+                if newIndex == safeIndex {
+                    continue
+                }
+                else {
+                    mineIndices.insert(newIndex)
+                }
+            }
+            else {
+                mineIndices.insert(Int.random(in: 0..<numRows*numColumns))
+            }
         }
 
         for row in 0..<numRows {

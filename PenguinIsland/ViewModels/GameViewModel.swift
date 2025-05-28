@@ -47,8 +47,8 @@ class GameViewModel {
         return level
     }
     
-    func layMines() ->  Array2D<Tile> {
-        return level.layMines()
+    func layMines(_ safeIndex: Int? = nil) ->  Array2D<Tile> {
+        return level.layMines(safeIndex)
     }
     
     func resetFlags() {

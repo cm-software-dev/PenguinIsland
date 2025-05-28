@@ -48,6 +48,8 @@ class GameScene: SKScene {
     
     var firstTap = true
     
+    var layMines: ((Int) -> ())?
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
     }
@@ -122,7 +124,13 @@ class GameScene: SKScene {
         let location = touch.location(in: tilesLayer)
         
         let (success, column, row) = convertPoint(location)
+        
         if success {
+            if firstTap {
+                firstTap = false
+                layMines?(row*numColumns + column)
+            }
+            
             if let tile = level.tileAt(column: column, row: row),
                let sprite = SKSpriteNode(fileNamed: SpriteTileName.baseTileTapped.rawValue ) {
                 replaceSpriteInTile(tile: tile, newSprite: sprite)

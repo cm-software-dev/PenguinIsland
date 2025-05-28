@@ -99,6 +99,7 @@ class GameViewController: UIViewController {
         
         scene.level = viewModel.level
         
+        scene.layMines = layMinesWithSafeIndex
         scene.tapHandler = handleTap(tile:)
         scene.flagPlantedHandler = handleFlagToggled(tile:)
         
@@ -110,6 +111,10 @@ class GameViewController: UIViewController {
         if playMusic {
             backgroundMusic?.play()
         }
+    }
+    
+    private func layMinesWithSafeIndex(_ safeIndex: Int) {
+        self.layMines(safeIndex)
     }
     
     func handleTap(tile: Tile) {
@@ -148,8 +153,10 @@ class GameViewController: UIViewController {
     }
     
     func beginGame() {
+        scene.firstTap = true
         scene.isUserInteractionEnabled = true
         resetValues()
+        scene.level = viewModel.getNewLevel()
         layMines()
     }
     
@@ -159,8 +166,8 @@ class GameViewController: UIViewController {
         scene.plantingFlag = plantingFlag
     }
     
-    private func layMines() {
-        let newTiles = viewModel.layMines()
+    private func layMines(_ safeIndex: Int? = nil) {
+        let newTiles = viewModel.layMines(safeIndex)
         scene.addSprites(for: newTiles)
     }
     
@@ -172,8 +179,6 @@ class GameViewController: UIViewController {
             backgroundMusic?.play()
         }
         scene.alpha = 1
-        
-        scene.level = viewModel.getNewLevel()
         beginGame()
     }
     
