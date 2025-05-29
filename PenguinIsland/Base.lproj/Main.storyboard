@@ -183,9 +183,10 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="BaseWindowLong" translatesAutoresizingMaskIntoConstraints="NO" id="8wd-z0-kav">
-                                <rect key="frame" x="-53.666666666666657" y="16" width="500.33333333333326" height="50"/>
+                                <rect key="frame" x="76.666666666666686" y="16" width="240" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="acz-jj-nTP"/>
+                                    <constraint firstAttribute="width" constant="240" id="xT4-Y6-2ih"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZT-K7-690">
@@ -443,11 +444,15 @@
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" backgroundImage="exit"/>
+                                <connections>
+                                    <action selector="dismissButtonPressed:" destination="thH-Ec-3cV" eventType="touchUpInside" id="wfw-zg-yUu"/>
+                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="BaseWindowLong" translatesAutoresizingMaskIntoConstraints="NO" id="qvT-PZ-GJN">
-                                <rect key="frame" x="-53.666666666666657" y="16" width="500.33333333333326" height="50"/>
+                                <rect key="frame" x="76.666666666666686" y="16" width="240.00000000000006" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="4Je-n4-vaw"/>
+                                    <constraint firstAttribute="width" constant="240" id="bJs-oy-Bm6"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kn1-iM-D6r">

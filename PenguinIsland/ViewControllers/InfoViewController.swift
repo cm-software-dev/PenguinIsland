@@ -27,4 +27,8 @@ class InfoViewController: UIViewController {
         
         infoParagraphThreeLabel.text = "You win if you can correctly mark where all the eggs are with flags or if the remaining undisturbed tiles contain only eggs."
     }
+    
+    @IBAction func dismissButtonPressed(_ sender: Any) {
+        self.presentingViewController?.dismiss(animated: true)
+    }
 }
