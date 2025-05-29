@@ -153,7 +153,7 @@ class GameScene: SKScene {
         showAllMines()
     }
     
-    private func showAllMines() {
+    func showAllMines() {
         level.getAllTiles().forEach({
             tile in
             if tile.mine && !tile.broken && !tile.flagged {

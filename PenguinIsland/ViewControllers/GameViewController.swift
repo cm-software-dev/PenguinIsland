@@ -120,7 +120,7 @@ class GameViewController: UIViewController {
         addFlagButton.isHidden = true
         scene.alpha = viewModel.gameEndAlpha
         viewModel.victoryMusic?.play()
-        
+        scene.showAllMines()
         //do something
     }
     
