@@ -26,6 +26,10 @@ class HomeViewController: UIViewController {
         self.performSegue(withIdentifier: "presentSettings", sender: self)
     }
     
+    @IBAction func infoButtonPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "presentInfo", sender: self)
+    }
+    
     private func presentSettingsViewController() {
         let settingsVC = SettingsViewController()
         settingsVC.modalPresentationStyle = .overCurrentContext
