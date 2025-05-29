@@ -200,6 +200,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game by Calum Maclellan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDQ-ND-NVH">
+                                <rect key="frame" x="123.66666666666669" y="496" width="146" height="14.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5Nz-B7-ny3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -208,6 +214,7 @@
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="leading" secondItem="t4e-Is-TbP" secondAttribute="leading" id="42o-3N-Iqm"/>
                             <constraint firstItem="pdp-aq-Rhw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5Nz-B7-ny3" secondAttribute="leading" constant="20" id="6H2-nC-k8o"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="bottom" secondItem="t4e-Is-TbP" secondAttribute="bottom" id="6Tp-oa-NCR"/>
+                            <constraint firstItem="iDQ-ND-NVH" firstAttribute="top" secondItem="pdp-aq-Rhw" secondAttribute="bottom" constant="-64" id="AG5-S3-fRD"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="centerX" secondItem="t4e-Is-TbP" secondAttribute="centerX" id="Atw-ev-Wow"/>
                             <constraint firstItem="3jB-Ly-Z9j" firstAttribute="leading" secondItem="3CR-pt-BBZ" secondAttribute="leading" id="Ce9-vz-CZT"/>
                             <constraint firstItem="MCn-9K-7ln" firstAttribute="leading" secondItem="5Nz-B7-ny3" secondAttribute="leading" constant="16" id="DLi-xj-Igp"/>
@@ -226,6 +233,7 @@
                             <constraint firstItem="ztG-8Y-0UG" firstAttribute="centerX" secondItem="pdp-aq-Rhw" secondAttribute="centerX" id="aIz-nu-P7T"/>
                             <constraint firstAttribute="trailing" secondItem="UfV-UA-k7c" secondAttribute="trailing" id="brK-HK-cc3"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="centerY" secondItem="t4e-Is-TbP" secondAttribute="centerY" id="cQB-Ns-a6t"/>
+                            <constraint firstItem="iDQ-ND-NVH" firstAttribute="centerX" secondItem="t4e-Is-TbP" secondAttribute="centerX" id="dsR-9l-qHU"/>
                             <constraint firstItem="pdp-aq-Rhw" firstAttribute="centerX" secondItem="t4e-Is-TbP" secondAttribute="centerX" id="dto-Vg-geR"/>
                             <constraint firstItem="1N7-Dh-5OC" firstAttribute="top" secondItem="3CR-pt-BBZ" secondAttribute="bottom" constant="40" id="eG2-gu-vlw"/>
                             <constraint firstItem="RGt-pX-EjO" firstAttribute="trailing" secondItem="uhI-Es-CY9" secondAttribute="trailing" id="fNk-xd-Ggq"/>
@@ -285,7 +293,7 @@
                                 <state key="selected" backgroundImage="FlagButtonWithIconPressed"/>
                                 <state key="highlighted" backgroundImage="FlagButtonWithIconPressed"/>
                                 <connections>
-                                    <action selector="addFlagPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="obF-qU-mOH"/>
+                                    <action selector="addFlagPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="n9B-Ri-f2l"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VictoryWindow" translatesAutoresizingMaskIntoConstraints="NO" id="T6K-Y9-VfS">
@@ -374,7 +382,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="F6r-6R-eEJ"/>
                     <connections>
-                        <outlet property="addFlagButton" destination="dzb-J5-eTp" id="jVV-JS-93r"/>
+                        <outlet property="addFlagButton" destination="dzb-J5-eTp" id="zCC-FB-Eok"/>
                         <outlet property="exitButton" destination="Tim-1j-6F0" id="kTe-qg-E7f"/>
                         <outlet property="flagsLabel" destination="rb2-pG-jbS" id="qeV-8Q-W1o"/>
                         <outlet property="gameOverImage" destination="T6K-Y9-VfS" id="pIl-gl-fiv"/>

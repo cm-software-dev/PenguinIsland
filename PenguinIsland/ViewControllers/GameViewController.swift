@@ -31,18 +31,7 @@ class GameViewController: UIViewController {
         }
     }
     
-    private var playMusic = true {
-        didSet {
-            if playMusic {
-                backgroundMusic?.play()
-                soundImage.image = UIImage(named: "win95_sound")
-            }
-            else {
-                backgroundMusic?.pause()
-                soundImage.image = UIImage(named: "win95_sound_muted")
-            }
-        }
-    }
+    
     
     private var plantingFlag: Bool = false {
         didSet {
@@ -54,19 +43,6 @@ class GameViewController: UIViewController {
             }
         }
     }
-    
-    lazy var backgroundMusic: AVAudioPlayer? = {
-        guard let url = Bundle.main.url(forResource: "RoundShapes", withExtension: "mp3") else {
-            return nil
-        }
-        do {
-            let player = try AVAudioPlayer(contentsOf: url)
-            player.numberOfLoops = -1
-            return player
-        } catch {
-            return nil
-        }
-    }()
     
     
     override func viewDidLoad() {
@@ -105,12 +81,15 @@ class GameViewController: UIViewController {
         
         // Present the scene.
         skView.presentScene(scene)
-        
+        addFlagButton.isEnabled = false
         beginGame()
         
-        if playMusic {
-            backgroundMusic?.play()
-        }
+        viewModel.backgroundMusic?.play()
+        
+    }
+      
+    override func viewWillDisappear(_ animated: Bool) {
+        viewModel.backgroundMusic?.stop()
     }
     
     private func layMinesWithSafeIndex(_ safeIndex: Int) {
@@ -119,6 +98,7 @@ class GameViewController: UIViewController {
     
     func handleTap(tile: Tile) {
         if tile.mine {
+            tile.broken = true
             viewModel.gameOver()
             scene.gameOver()
             showGameOver()
@@ -132,13 +112,15 @@ class GameViewController: UIViewController {
     
     
     private func showVictory() {
-        backgroundMusic?.stop()
+        viewModel.backgroundMusic?.stop()
         gameOverImage.image = UIImage(named: "VictoryWindowEgg")
         gameOverImage.isHidden = false
         scene.isUserInteractionEnabled = false
         tryAgainButton.isHidden = false
         addFlagButton.isHidden = true
         scene.alpha = viewModel.gameEndAlpha
+        viewModel.victoryMusic?.play()
+        
         //do something
     }
     
@@ -147,17 +129,20 @@ class GameViewController: UIViewController {
         tryAgainButton.isHidden = false
         gameOverImage.isHidden = false
         addFlagButton.isHidden = true
-        backgroundMusic?.stop()
+        viewModel.backgroundMusic?.stop()
+        viewModel.gameOverMusic?.play()
         gameOverImage.image = UIImage(named: "GameOverEgg")
         scene.alpha = viewModel.gameEndAlpha
     }
     
     func beginGame() {
+        // prevent planting of flags until the first tile has been tapped and the mines layed
+        addFlagButton.isEnabled = false
         scene.firstTap = true
         scene.isUserInteractionEnabled = true
         resetValues()
         scene.level = viewModel.getNewLevel()
-        layMines()
+        scene.setBlankTileSprites()
     }
     
     private func resetValues() {
@@ -167,6 +152,7 @@ class GameViewController: UIViewController {
     }
     
     private func layMines(_ safeIndex: Int? = nil) {
+        addFlagButton.isEnabled = true
         let newTiles = viewModel.layMines(safeIndex)
         scene.addSprites(for: newTiles)
     }
@@ -175,16 +161,18 @@ class GameViewController: UIViewController {
         tryAgainButton.isHidden = true
         addFlagButton.isHidden = false
         gameOverImage.isHidden = true
-        if playMusic {
-            backgroundMusic?.play()
-        }
+        
+        viewModel.backgroundMusic?.play()
+        
         scene.alpha = 1
         beginGame()
     }
     
-    @IBAction func addFlagPressed(_ sender: Any) {
-        plantingFlag.toggle()
-        scene.plantingFlag = plantingFlag
+    @IBAction func addFlagPressed(_ sender: UIButton) {
+        if sender.isEnabled {
+            plantingFlag.toggle()
+            scene.plantingFlag = plantingFlag
+        }
     }
     
     
@@ -198,7 +186,8 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func didTapSoundImageView(_ sender: UITapGestureRecognizer) {
-        playMusic.toggle()
+        viewModel.playMusic.toggle()
+        soundImage.image = viewModel.soundImage
     }
     
     @IBAction func tapGameOverImage(_ sender: Any) {

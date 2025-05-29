@@ -87,6 +87,17 @@ class GameScene: SKScene {
         level.getAllTiles().forEach { $0.sprite?.alpha = 1}
     }
     
+    func setBlankTileSprites() {
+        tilesLayer.removeAllChildren()
+        for row in 0..<level.numRows {
+            for column in 0..<numColumns {
+                let sprite = SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue)
+                sprite.position = pointFor(column: column, row: row)
+                tilesLayer.addChild(sprite)
+            }
+        }
+    }
+    
     func addSprites(for tiles: Array2D<Tile>) {
         tilesLayer.removeAllChildren()
         plantingFlag = false
@@ -126,7 +137,7 @@ class GameScene: SKScene {
         let (success, column, row) = convertPoint(location)
         
         if success {
-            if firstTap {
+            if firstTap && !plantingFlag {
                 firstTap = false
                 layMines?(row*numColumns + column)
             }
@@ -145,8 +156,8 @@ class GameScene: SKScene {
     private func showAllMines() {
         level.getAllTiles().forEach({
             tile in
-            if tile.mine {
-                tile.sprite?.color = .black
+            if tile.mine && !tile.broken && !tile.flagged {
+                replaceSpriteInTile(tile: tile, newSprite: SKSpriteNode(imageNamed: SpriteTileName.fineEgg.rawValue))
             }
         })
     }
@@ -201,7 +212,7 @@ class GameScene: SKScene {
         let adjacentTileCoords = Helpers.getAdjacentTileCoords(column: tile.column, row: tile.row, maxColumns: numColumns, maxRows: numRows)
         adjacentTileCoords.forEach {
             coord in
-            if let tile = level.tileAt(column: coord.0, row: coord.1), !tile.visible {
+            if let tile = level.tileAt(column: coord.0, row: coord.1), !tile.visible, !tile.flagged {
                 tileSpriteTapped(tile: tile)
             }
         }
@@ -213,7 +224,7 @@ class GameScene: SKScene {
 
         }
         if tile.mine {
-            return SKSpriteNode(color: .black, size: CGSize(width: tileWidth, height: tileHeight))
+            return SKSpriteNode(imageNamed: SpriteTileName.brokenEgg.rawValue)
         }
         switch tile.adjacentMines {
         case 0:
@@ -270,4 +281,6 @@ enum SpriteTileName: String {
     case sevenTile = "SevenTile"
     case eightTile = "EightTile"
     case baseTileTapped = "BaseTileTapped"
+    case brokenEgg = "BrokenEggBlack"
+    case fineEgg = "FineEgg"
 }

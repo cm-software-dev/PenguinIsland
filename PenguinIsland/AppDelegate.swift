@@ -15,6 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //initialise userdefaults on first installation
+        UserDefaults.standard.register(defaults: [
+            SettingsKeys.musicVolume.rawValue : 0.5,
+            SettingsKeys.fxVolume.rawValue: 0.25,
+            SettingsKeys.eggs.rawValue: 15
+        ])
+        
         return true
     }
 

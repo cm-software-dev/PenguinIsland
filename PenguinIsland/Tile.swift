@@ -13,6 +13,7 @@ class Tile {
     var flagged: Bool
     let mine: Bool
     var adjacentMines: Int
+    var broken: Bool = false
     
     let column: Int
     let row: Int

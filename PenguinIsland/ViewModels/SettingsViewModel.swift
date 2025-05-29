@@ -20,7 +20,7 @@ class SettingsViewModel {
     }
     
     let minEggs: Float = 5.0
-    let maxEggs: Float = 30.0
+    let maxEggs: Float = 35.0
     
     let maxVolume: Float = 1.0
     
