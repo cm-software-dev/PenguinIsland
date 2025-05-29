@@ -84,7 +84,7 @@ class GameViewController: UIViewController {
         addFlagButton.isEnabled = false
         beginGame()
         
-        viewModel.backgroundMusic?.play()
+        viewModel.playBackgroundMusic()
         
     }
       
@@ -119,9 +119,8 @@ class GameViewController: UIViewController {
         tryAgainButton.isHidden = false
         addFlagButton.isHidden = true
         scene.alpha = viewModel.gameEndAlpha
-        viewModel.victoryMusic?.play()
+        viewModel.playVictoryMusic()
         scene.showAllMines()
-        //do something
     }
     
     private func showGameOver() {
@@ -130,7 +129,7 @@ class GameViewController: UIViewController {
         gameOverImage.isHidden = false
         addFlagButton.isHidden = true
         viewModel.backgroundMusic?.stop()
-        viewModel.gameOverMusic?.play()
+        viewModel.playGameOverMusic()
         gameOverImage.image = UIImage(named: "GameOverEgg")
         scene.alpha = viewModel.gameEndAlpha
     }
@@ -161,9 +160,8 @@ class GameViewController: UIViewController {
         tryAgainButton.isHidden = true
         addFlagButton.isHidden = false
         gameOverImage.isHidden = true
-        
-        viewModel.backgroundMusic?.play()
-        
+        viewModel.playBackgroundMusic()
+    
         scene.alpha = 1
         beginGame()
     }

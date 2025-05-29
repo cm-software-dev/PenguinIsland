@@ -120,6 +120,7 @@
                                 <rect key="frame" x="20" y="60" width="353" height="500"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="353" id="4cm-1Y-sxR"/>
+                                    <constraint firstAttribute="height" constant="500" id="7yC-qw-c0E"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eggs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sfm-qb-ia2">
@@ -201,7 +202,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game by Calum Maclellan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDQ-ND-NVH">
-                                <rect key="frame" x="123.66666666666669" y="496" width="146" height="14.333333333333314"/>
+                                <rect key="frame" x="123.66666666666669" y="475.66666666666669" width="146" height="14.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -214,7 +215,7 @@
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="leading" secondItem="t4e-Is-TbP" secondAttribute="leading" id="42o-3N-Iqm"/>
                             <constraint firstItem="pdp-aq-Rhw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5Nz-B7-ny3" secondAttribute="leading" constant="20" id="6H2-nC-k8o"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="bottom" secondItem="t4e-Is-TbP" secondAttribute="bottom" id="6Tp-oa-NCR"/>
-                            <constraint firstItem="iDQ-ND-NVH" firstAttribute="top" secondItem="pdp-aq-Rhw" secondAttribute="bottom" constant="-64" id="AG5-S3-fRD"/>
+                            <constraint firstItem="iDQ-ND-NVH" firstAttribute="bottom" secondItem="pdp-aq-Rhw" secondAttribute="bottom" constant="-70" id="AG5-S3-fRD"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="centerX" secondItem="t4e-Is-TbP" secondAttribute="centerX" id="Atw-ev-Wow"/>
                             <constraint firstItem="3jB-Ly-Z9j" firstAttribute="leading" secondItem="3CR-pt-BBZ" secondAttribute="leading" id="Ce9-vz-CZT"/>
                             <constraint firstItem="MCn-9K-7ln" firstAttribute="leading" secondItem="5Nz-B7-ny3" secondAttribute="leading" constant="16" id="DLi-xj-Igp"/>

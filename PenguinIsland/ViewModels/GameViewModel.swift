@@ -103,7 +103,9 @@ class GameViewModel {
     var playMusic = true {
         didSet {
             if playMusic {
-                backgroundMusic?.play()
+                if !level.gameOver {
+                    backgroundMusic?.play()
+                }
                 soundImage = UIImage(named: "win95_sound")
             }
             else {
@@ -124,6 +126,24 @@ class GameViewModel {
     
     func gameOver() {
         level.gameOver = true
+    }
+    
+    func playGameOverMusic() {
+        if playMusic {
+            gameOverMusic?.play()
+        }
+    }
+    
+    func playBackgroundMusic() {
+        if playMusic {
+            backgroundMusic?.play()
+        }
+    }
+    
+    func playVictoryMusic() {
+        if playMusic {
+            victoryMusic?.play()
+        }
     }
     
     func checkVictory() {
@@ -158,7 +178,6 @@ class GameViewModel {
                 removeFlagSound?.play()
             }
         }
-        
         
         let flag = tile.flagged
         if flag {

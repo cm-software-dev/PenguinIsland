@@ -50,6 +50,9 @@ class GameScene: SKScene {
     
     var layMines: ((Int) -> ())?
     
+    private var selectedTile: Tile?
+    private var selectedTileInitialSprite: SKSpriteNode?
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
     }
@@ -125,7 +128,13 @@ class GameScene: SKScene {
             if let tile = level.tileAt(column: column, row: row) {
                 tileSpriteTapped(tile: tile)
             }
+            else if let previousTile = selectedTile, let previousSprite = selectedTileInitialSprite {
+                replaceSpriteInTile(tile: previousTile, newSprite: previousSprite)
+            }
         }
+        
+        selectedTile = nil
+        selectedTileInitialSprite = nil
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -141,12 +150,38 @@ class GameScene: SKScene {
                 firstTap = false
                 layMines?(row*numColumns + column)
             }
-            
-            if let tile = level.tileAt(column: column, row: row),
-               let sprite = SKSpriteNode(fileNamed: SpriteTileName.baseTileTapped.rawValue ) {
-                replaceSpriteInTile(tile: tile, newSprite: sprite)
+            if !plantingFlag {
+                if let tile = level.tileAt(column: column, row: row), !tile.visible {
+                    let sprite = SKSpriteNode(imageNamed: SpriteTileName.baseTileTapped.rawValue )
+                    selectedTile = tile
+                    selectedTileInitialSprite = tile.sprite
+                    replaceSpriteInTile(tile: tile, newSprite: sprite)
+                }
             }
         }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else {
+            return
+        }
+        let location = touch.location(in: tilesLayer)
+        let (success, column, row) = convertPoint(location)
+        
+        
+        if success, let previousTile = selectedTile, let previousSprite = selectedTileInitialSprite, column != previousTile.column || row != previousTile.row {
+            
+    
+            selectedTile?.sprite = previousSprite
+            replaceSpriteInTile(tile: selectedTile!, newSprite: SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue ))
+            
+            if let nextTile = level.tileAt(column: column, row: row), !nextTile.visible {
+                selectedTile = nextTile
+                selectedTileInitialSprite = selectedTile?.sprite
+                replaceSpriteInTile(tile: selectedTile!, newSprite: SKSpriteNode(imageNamed: SpriteTileName.baseTileTapped.rawValue ))
+            }
+        }
+        
     }
     
     func gameOver() {
