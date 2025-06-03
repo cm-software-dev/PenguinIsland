@@ -204,6 +204,7 @@ class GameViewModel {
             //remove flag if already there otherwise do nothing
             if tile.flagged {
                 removeFlagFromTile(tile)
+                return true
             }
             return false
         }

@@ -241,7 +241,7 @@ class GameScene: SKScene {
                 replaceSpriteInTile(tile: tile, newSprite: newSprite)
             }
             else {
-                let newSprite = determineSprite(tile: tile)
+                let newSprite = SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue)
                 replaceSpriteInTile(tile: tile, newSprite: newSprite)
             }
         }
@@ -251,9 +251,28 @@ class GameScene: SKScene {
         let adjacentTileCoords = Helpers.getAdjacentTileCoords(column: tile.column, row: tile.row, maxColumns: numColumns, maxRows: numRows)
         adjacentTileCoords.forEach {
             coord in
-            if let tile = level.tileAt(column: coord.0, row: coord.1), !tile.visible, !tile.flagged {
-                tileSpriteTapped(tile: tile)
+            if let tile = level.tileAt(column: coord.0, row: coord.1), !tile.visible {
+                revealTileWithNoMine(tile)
             }
+        }
+    }
+    
+    private func revealTileWithNoMine(_ tile: Tile) {
+        if tile.visible {
+            return
+        }
+        
+        tile.visible = true
+        if tile.flagged {
+            //toggle the flag by calling setFlagForTile
+            setFlagForTile(tile: tile)
+        }
+        let newSprite = determineSprite(tile: tile)
+        replaceSpriteInTile(tile: tile, newSprite: newSprite)
+        
+        
+        if tile.adjacentMines == 0 && !tile.mine {
+            updateTilesForTileWithNoAdjacentMines(tile: tile)
         }
     }
     
