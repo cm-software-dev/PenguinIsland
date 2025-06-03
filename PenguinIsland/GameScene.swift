@@ -169,12 +169,16 @@ class GameScene: SKScene {
         let (success, column, row) = convertPoint(location)
         
         
-        if success, let previousTile = selectedTile, let previousSprite = selectedTileInitialSprite, column != previousTile.column || row != previousTile.row {
+        if let previousTile = selectedTile, let previousSprite = selectedTileInitialSprite, column != previousTile.column || row != previousTile.row {
             
-    
-            selectedTile?.sprite = previousSprite
+            //if we have a previous tile we moved from reset it to thge cached sprite ie the BaseTile
+            previousTile.sprite = previousSprite
             replaceSpriteInTile(tile: selectedTile!, newSprite: SKSpriteNode(imageNamed: SpriteTileName.baseTile.rawValue ))
-            
+        }
+        
+        //if the new location is a space on the tileLayer cache it as the selected tile
+        //set its current sprite as the baseTileTapped
+        if success {
             if let nextTile = level.tileAt(column: column, row: row), !nextTile.visible {
                 selectedTile = nextTile
                 selectedTileInitialSprite = selectedTile?.sprite
