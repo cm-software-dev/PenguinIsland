@@ -179,7 +179,7 @@ class GameScene: SKScene {
         //if the new location is a space on the tileLayer cache it as the selected tile
         //set its current sprite as the baseTileTapped
         if success {
-            if let nextTile = level.tileAt(column: column, row: row), !nextTile.visible {
+            if let nextTile = level.tileAt(column: column, row: row), !nextTile.visible, !nextTile.flagged {
                 selectedTile = nextTile
                 selectedTileInitialSprite = selectedTile?.sprite
                 replaceSpriteInTile(tile: selectedTile!, newSprite: SKSpriteNode(imageNamed: SpriteTileName.baseTileTapped.rawValue ))
