@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.register(defaults: [
             SettingsKeys.musicVolume.rawValue : 0.5,
             SettingsKeys.fxVolume.rawValue: 0.25,
-            SettingsKeys.eggs.rawValue: 15
+            SettingsKeys.eggs.rawValue: 15,
+            SettingsKeys.muted.rawValue: false
         ])
         
         return true

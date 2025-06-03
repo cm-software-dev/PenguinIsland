@@ -44,7 +44,7 @@ class GameScene: SKScene {
     }
     
     var tapHandler: ((Tile) -> ())?
-    var flagPlantedHandler: ((Tile) -> ())?
+    var flagPlantedHandler: ((Tile) -> (Bool))?
     
     var firstTap = true
     
@@ -235,16 +235,16 @@ class GameScene: SKScene {
     }
     
     private func setFlagForTile(tile: Tile) {
-        tile.flagged.toggle()
-        if tile.flagged {
-            let newSprite = SKSpriteNode(imageNamed: SpriteTileName.flagTile.rawValue)
-            replaceSpriteInTile(tile: tile, newSprite: newSprite)
+        if let flagHandler = flagPlantedHandler, flagHandler(tile) {
+            if tile.flagged {
+                let newSprite = SKSpriteNode(imageNamed: SpriteTileName.flagTile.rawValue)
+                replaceSpriteInTile(tile: tile, newSprite: newSprite)
+            }
+            else {
+                let newSprite = determineSprite(tile: tile)
+                replaceSpriteInTile(tile: tile, newSprite: newSprite)
+            }
         }
-        else {
-            let newSprite = determineSprite(tile: tile)
-            replaceSpriteInTile(tile: tile, newSprite: newSprite)
-        }
-        flagPlantedHandler?(tile)
     }
     
     private func updateTilesForTileWithNoAdjacentMines(tile: Tile) {

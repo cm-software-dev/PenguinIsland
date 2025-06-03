@@ -57,4 +57,5 @@ enum SettingsKeys: String {
     case musicVolume = "musicVolume"
     case fxVolume = "fxVolume"
     case eggs = "eggs"
+    case muted = "muted"
 }

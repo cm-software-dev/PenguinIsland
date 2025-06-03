@@ -44,7 +44,6 @@ class GameViewController: UIViewController {
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -86,6 +85,8 @@ class GameViewController: UIViewController {
         
         viewModel.playBackgroundMusic()
         
+        soundImage.image = viewModel.soundImage
+        
     }
       
     override func viewWillDisappear(_ animated: Bool) {
@@ -106,8 +107,8 @@ class GameViewController: UIViewController {
         viewModel.checkVictory()
     }
     
-    func handleFlagToggled(tile: Tile) {
-        viewModel.handleFlagToggled(tile: tile)
+    func handleFlagToggled(tile: Tile) -> Bool {
+        return viewModel.handleFlagToggled(tile: tile)
     }
     
     

@@ -100,28 +100,40 @@ class GameViewModel {
         }
     }()
     
-    var playMusic = true {
+    var playMusic: Bool {
         didSet {
             if playMusic {
                 if !level.gameOver {
                     backgroundMusic?.play()
                 }
-                soundImage = UIImage(named: "win95_sound")
             }
             else {
                 backgroundMusic?.pause()
-                soundImage = UIImage(named: "win95_sound_muted")
             }
+            setSoundImageForPlayMusic(playMusic)
+            UserDefaults.standard.set(!playMusic, forKey: SettingsKeys.muted.rawValue)
         }
     }
     
     var soundImage: UIImage? = UIImage(named: "win95_sound")
  
     init() {
+        playMusic = !UserDefaults.standard.bool(forKey: SettingsKeys.muted.rawValue)
         fxLevel = UserDefaults.standard.float(forKey: SettingsKeys.fxVolume.rawValue)
         musicLevel = UserDefaults.standard.float(forKey: SettingsKeys.musicVolume.rawValue)
         numMines = UserDefaults.standard.integer(forKey: SettingsKeys.eggs.rawValue)
         level = Level(numColumns: numColumns, numRows: numRows, mines: numMines)
+        setSoundImageForPlayMusic(playMusic)
+       
+    }
+    
+    private func setSoundImageForPlayMusic(_ playMusic: Bool) {
+        if playMusic {
+            soundImage = UIImage(named: "win95_sound")
+        }
+        else {
+            soundImage = UIImage(named: "win95_sound_muted")
+        }
     }
     
     func gameOver() {
@@ -167,35 +179,55 @@ class GameViewModel {
         flagsPlanted = 0
     }
     
-    func handleFlagToggled(tile: Tile) {
-        plantFlagSound?.stop()
-        removeFlagSound?.stop()
+    private func removeFlagFromTile(_ tile: Tile) {
         if playMusic {
-            if tile.flagged {
-                plantFlagSound?.play()
-            }
-            else {
-                removeFlagSound?.play()
-            }
+            removeFlagSound?.play()
         }
-        
-        let flag = tile.flagged
-        if flag {
-            flagsPlanted+=1
-        }
-        else {
-            flagsPlanted-=1
-        }
-        if tile.mine && flag {
-            level.correctFlags+=1
-        }
-        else if tile.mine && !flag {
+        flagsPlanted-=1
+        if tile.mine {
             level.correctFlags-=1
         }
-        if level.correctFlags == level.mines {
-            level.victory = true
-            haveVictory?()
+    }
+    
+    private func plantFlagOnTile(_ tile: Tile) {
+        if playMusic {
+            plantFlagSound?.play()
         }
+        flagsPlanted+=1
+        if tile.mine {
+            level.correctFlags+=1
+        }
+    }
+    
+    func handleFlagToggled(tile: Tile) -> Bool {
+        if flagsPlanted >= numMines {
+            //remove flag if already there otherwise do nothing
+            if tile.flagged {
+                removeFlagFromTile(tile)
+            }
+            return false
+        }
+        else {
+            tile.flagged.toggle()
+            plantFlagSound?.stop()
+            removeFlagSound?.stop()
+            
+            let flag = tile.flagged
+            
+            if flag {
+                plantFlagOnTile(tile)
+            }
+            else {
+                removeFlagFromTile(tile)
+            }
+        
+            if level.correctFlags == level.mines {
+                level.victory = true
+                haveVictory?()
+            }
+            return true
+        }
+        
     }
     
 }
