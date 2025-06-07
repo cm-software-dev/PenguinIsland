@@ -151,7 +151,7 @@ class GameScene: SKScene {
                 layMines?(row*numColumns + column)
             }
             if !plantingFlag {
-                if let tile = level.tileAt(column: column, row: row), !tile.visible {
+                if let tile = level.tileAt(column: column, row: row), !tile.visible && !tile.flagged {
                     let sprite = SKSpriteNode(imageNamed: SpriteTileName.baseTileTapped.rawValue )
                     selectedTile = tile
                     selectedTileInitialSprite = tile.sprite
