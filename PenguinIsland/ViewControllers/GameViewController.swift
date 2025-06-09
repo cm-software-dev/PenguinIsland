@@ -11,8 +11,7 @@ import GameplayKit
 import AVKit
 
 class GameViewController: UIViewController {
-        
-    
+  
     var scene: GameScene!
     
     private let viewModel = GameViewModel()
@@ -62,24 +61,8 @@ class GameViewController: UIViewController {
         tryAgainButton.setBackgroundImage(UIImage(named: "PlayAgainButton"), for: .selected)
         addFlagButton.setBackgroundImage(UIImage(named: "FlagButtonWithIconPressed"), for: .selected)
         
-        // Configure the view
-        let skView = view as! SKView
-        skView.isMultipleTouchEnabled = false
-        tryAgainButton.isHidden = true
+       // setGameScene()
         
-        // Create and configure the scene.
-        scene = GameScene(size: skView.bounds.size)
-        scene.scaleMode = .aspectFill
-        
-        
-        scene.level = viewModel.level
-        
-        scene.layMines = layMinesWithSafeIndex
-        scene.tapHandler = handleTap(tile:)
-        scene.flagPlantedHandler = handleFlagToggled(tile:)
-        
-        // Present the scene.
-        skView.presentScene(scene)
         addFlagButton.isEnabled = false
         beginGame()
         
@@ -87,6 +70,25 @@ class GameViewController: UIViewController {
         
         soundImage.image = viewModel.soundImage
         
+    }
+    
+    private func setGameScene() {
+        // Configure the view
+        let skView = view as! SKView
+        skView.isMultipleTouchEnabled = false
+        tryAgainButton.isHidden = true
+        
+        // Create and configure the scene.
+        scene = GameScene(size: skView.bounds.size, rows: viewModel.numRows, columns: viewModel.numColumns)
+        scene.scaleMode = .aspectFit
+        
+        scene.level = viewModel.getNewLevel()
+        scene.layMines = layMinesWithSafeIndex
+        scene.tapHandler = handleTap(tile:)
+        scene.flagPlantedHandler = handleFlagToggled(tile:)
+        
+        // Present the scene.
+        skView.presentScene(scene)
     }
       
     override func viewWillDisappear(_ animated: Bool) {
@@ -136,13 +138,15 @@ class GameViewController: UIViewController {
     }
     
     func beginGame() {
+        setGameScene()
+        
         // prevent planting of flags until the first tile has been tapped and the mines layed
         addFlagButton.isEnabled = false
         scene.firstTap = true
         scene.isUserInteractionEnabled = true
         resetValues()
-        scene.level = viewModel.getNewLevel()
         scene.setBlankTileSprites()
+        
     }
     
     private func resetValues() {

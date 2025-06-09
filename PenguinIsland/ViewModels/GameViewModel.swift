@@ -11,9 +11,10 @@ import AVKit
 class GameViewModel {
     
     var level: Level!
-    let numRows: Int = 16
-    let numColumns: Int = 9
-    var numMines = 15
+    var numRows: Int 
+    var numColumns: Int
+    var numMines: Int
+    
     let gameEndAlpha: CGFloat = 0.6
     
     var musicLevel: Float
@@ -122,9 +123,15 @@ class GameViewModel {
         fxLevel = UserDefaults.standard.float(forKey: SettingsKeys.fxVolume.rawValue)
         musicLevel = UserDefaults.standard.float(forKey: SettingsKeys.musicVolume.rawValue)
         numMines = UserDefaults.standard.integer(forKey: SettingsKeys.eggs.rawValue)
+        
+        let gameSizeRawValue = UserDefaults.standard.integer(forKey: SettingsKeys.gameSize.rawValue)
+        let gameSize = GameSize(rawValue: gameSizeRawValue) ?? .iphoneDefault
+        let difficultySettings = DifficultySettings(gameSize)
+        numRows = difficultySettings.numRows
+        numColumns = difficultySettings.numColumns
+        
         level = Level(numColumns: numColumns, numRows: numRows, mines: numMines)
         setSoundImageForPlayMusic(playMusic)
-       
     }
     
     private func setSoundImageForPlayMusic(_ playMusic: Bool) {
@@ -231,4 +238,45 @@ class GameViewModel {
         
     }
     
+}
+
+
+enum GameSize: Int {
+    case ipadSmall = 1
+    case ipadMedium = 2
+    case ipadLarge = 3
+    case iphoneDefault = 4
+}
+
+//get rid of difficulty enum defined here - instead have 3 ipad only options in the settings
+//with the default parameters below.
+//the mines can still be edited with the slider
+//set the slider ranges based on the selected difficulty
+
+struct DifficultySettings {
+    
+    let numRows: Int
+    let numColumns: Int
+    let numMines: Int
+    
+    init(_ size: GameSize) {
+        switch size {
+        case .ipadSmall:
+            numRows = 9
+            numColumns = 9
+            numMines = 10
+        case .ipadMedium:
+            numRows = 16
+            numColumns = 16
+            numMines = 40
+        case .ipadLarge:
+            numRows = 16
+            numColumns = 30
+            numMines = 99
+        case .iphoneDefault:
+            numRows = 16
+            numColumns = 9
+            numMines = 15
+        }
+    }
 }

@@ -23,8 +23,8 @@ class GameScene: SKScene {
     let gameLayer = SKNode()
     let tilesLayer = SKNode()
     
-    var numRows: Int = 16
-    var numColumns: Int = 9
+    var numRows: Int
+    var numColumns: Int
     
     var tappedColumn: Int?
     var tappedRow: Int?
@@ -57,7 +57,10 @@ class GameScene: SKScene {
         fatalError("init(coder) is not used in this app")
     }
     
-    override init(size: CGSize) {
+    init(size: CGSize, rows: Int, columns: Int) {
+        self.numRows = rows
+        self.numColumns = columns
+        
         super.init(size: size)
         
         anchorPoint = CGPoint(x: 0.5, y: 0.5)

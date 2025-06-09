@@ -20,9 +20,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.register(defaults: [
             SettingsKeys.musicVolume.rawValue : 0.5,
             SettingsKeys.fxVolume.rawValue: 0.25,
-            SettingsKeys.eggs.rawValue: 15,
-            SettingsKeys.muted.rawValue: false
+            SettingsKeys.muted.rawValue: false,
         ])
+        if UIDevice.current.model == "iPad" {
+            let ipadDefaultSettings = DifficultySettings(.ipadMedium)
+            UserDefaults.standard.register(defaults: [
+                SettingsKeys.gameSize.rawValue: GameSize.ipadMedium.rawValue,
+                SettingsKeys.eggs.rawValue: ipadDefaultSettings.numMines,
+                SettingsKeys.numRows.rawValue: ipadDefaultSettings.numRows,
+                SettingsKeys.numColumns.rawValue: ipadDefaultSettings.numColumns
+                ])
+        }
+        else {
+            let iphoneDefaultSettings = DifficultySettings(.iphoneDefault)
+            UserDefaults.standard.register(defaults: [
+                SettingsKeys.gameSize.rawValue: GameSize.iphoneDefault.rawValue,
+                SettingsKeys.eggs.rawValue: iphoneDefaultSettings.numMines,
+                SettingsKeys.numRows.rawValue: iphoneDefaultSettings.numRows,
+                SettingsKeys.numColumns.rawValue: iphoneDefaultSettings.numColumns
+                ])
+        }
         
         return true
     }

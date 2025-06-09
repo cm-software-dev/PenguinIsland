@@ -27,6 +27,10 @@ class Level {
     
     var correctFlags: Int = 0
     
+    convenience init(_ settings: DifficultySettings) {
+        self.init(numColumns: settings.numColumns, numRows: settings.numRows, mines: settings.numMines)
+    }
+    
     init(numColumns: Int, numRows: Int, mines: Int) {
         self.numColumns = numColumns
         self.numRows = numRows

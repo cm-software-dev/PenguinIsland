@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="v6W-fw-WeX">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -217,6 +218,33 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dzU-Nz-UDf">
+                                <rect key="frame" x="41.666666666666657" y="456" width="100" height="36"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="9x9-Button"/>
+                                <state key="selected" image="9x9-ButtonPressed"/>
+                                <connections>
+                                    <action selector="smallButtonPressed:" destination="VZg-KH-Wha" eventType="touchUpInside" id="Vnq-yR-iYD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uvz-Pq-8RL">
+                                <rect key="frame" x="146.66666666666666" y="456" width="100" height="36"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="16x16-Button"/>
+                                <state key="selected" image="16x16-ButtonPressed"/>
+                                <connections>
+                                    <action selector="mediumButtonPressed:" destination="VZg-KH-Wha" eventType="touchUpInside" id="1GQ-BH-itI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfx-Wd-p5o">
+                                <rect key="frame" x="251.66666666666663" y="456" width="100" height="36"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="30x16-Button"/>
+                                <state key="selected" image="30x16-ButtonPressed"/>
+                                <connections>
+                                    <action selector="largeButtonTapped:" destination="VZg-KH-Wha" eventType="touchDown" id="wCt-i8-1rN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5Nz-B7-ny3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -226,6 +254,7 @@
                             <constraint firstItem="pdp-aq-Rhw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5Nz-B7-ny3" secondAttribute="leading" constant="20" id="6H2-nC-k8o"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="bottom" secondItem="t4e-Is-TbP" secondAttribute="bottom" id="6Tp-oa-NCR"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="centerX" secondItem="t4e-Is-TbP" secondAttribute="centerX" id="Atw-ev-Wow"/>
+                            <constraint firstItem="gfx-Wd-p5o" firstAttribute="centerY" secondItem="Uvz-Pq-8RL" secondAttribute="centerY" id="CaL-ww-3cV"/>
                             <constraint firstItem="3jB-Ly-Z9j" firstAttribute="leading" secondItem="3CR-pt-BBZ" secondAttribute="leading" id="Ce9-vz-CZT"/>
                             <constraint firstItem="MCn-9K-7ln" firstAttribute="leading" secondItem="5Nz-B7-ny3" secondAttribute="leading" constant="16" id="DLi-xj-Igp"/>
                             <constraint firstItem="3CR-pt-BBZ" firstAttribute="leading" secondItem="pdp-aq-Rhw" secondAttribute="leading" id="EhG-wB-D7M"/>
@@ -236,8 +265,10 @@
                             <constraint firstItem="uhI-Es-CY9" firstAttribute="centerX" secondItem="t4e-Is-TbP" secondAttribute="centerX" id="MC4-6j-uKX"/>
                             <constraint firstItem="ztG-8Y-0UG" firstAttribute="top" secondItem="1N7-Dh-5OC" secondAttribute="bottom" constant="8" symbolic="YES" id="Mgb-AB-oCg"/>
                             <constraint firstItem="Sfm-qb-ia2" firstAttribute="leading" secondItem="uhI-Es-CY9" secondAttribute="leading" id="Mve-eW-CYb"/>
+                            <constraint firstItem="Uvz-Pq-8RL" firstAttribute="leading" secondItem="dzU-Nz-UDf" secondAttribute="trailing" constant="5" id="Mz7-gR-XCr"/>
                             <constraint firstItem="3CR-pt-BBZ" firstAttribute="centerX" secondItem="pdp-aq-Rhw" secondAttribute="centerX" id="PyE-SB-DfA"/>
                             <constraint firstItem="8wd-z0-kav" firstAttribute="centerX" secondItem="t4e-Is-TbP" secondAttribute="centerX" id="RTg-jN-f4R"/>
+                            <constraint firstItem="gfx-Wd-p5o" firstAttribute="leading" secondItem="Uvz-Pq-8RL" secondAttribute="trailing" constant="5" id="Rfr-M2-dJZ"/>
                             <constraint firstItem="3CR-pt-BBZ" firstAttribute="top" secondItem="pdp-aq-Rhw" secondAttribute="top" constant="90" id="Vlb-EX-JQv"/>
                             <constraint firstItem="pdp-aq-Rhw" firstAttribute="top" secondItem="MCn-9K-7ln" secondAttribute="bottom" id="Yor-lO-W9v"/>
                             <constraint firstItem="ztG-8Y-0UG" firstAttribute="centerX" secondItem="pdp-aq-Rhw" secondAttribute="centerX" id="aIz-nu-P7T"/>
@@ -248,9 +279,12 @@
                             <constraint firstItem="RGt-pX-EjO" firstAttribute="trailing" secondItem="uhI-Es-CY9" secondAttribute="trailing" id="fNk-xd-Ggq"/>
                             <constraint firstItem="Sfm-qb-ia2" firstAttribute="top" secondItem="ztG-8Y-0UG" secondAttribute="bottom" constant="40" id="iJZ-NL-xmS"/>
                             <constraint firstItem="1N7-Dh-5OC" firstAttribute="leading" secondItem="ztG-8Y-0UG" secondAttribute="leading" id="lP0-Uu-NGl"/>
+                            <constraint firstItem="Uvz-Pq-8RL" firstAttribute="top" secondItem="pdp-aq-Rhw" secondAttribute="bottom" constant="-104" id="lpS-qm-Uhc"/>
+                            <constraint firstItem="Uvz-Pq-8RL" firstAttribute="centerX" secondItem="pdp-aq-Rhw" secondAttribute="centerX" id="mVv-yG-CO7"/>
                             <constraint firstItem="yZT-K7-690" firstAttribute="top" secondItem="5Nz-B7-ny3" secondAttribute="top" constant="32" id="mn9-WY-hPd"/>
                             <constraint firstItem="MCn-9K-7ln" firstAttribute="top" secondItem="5Nz-B7-ny3" secondAttribute="top" constant="20" id="qrl-F2-1mw"/>
                             <constraint firstItem="RGt-pX-EjO" firstAttribute="centerY" secondItem="Sfm-qb-ia2" secondAttribute="centerY" id="s7h-Jq-Iia"/>
+                            <constraint firstItem="dzU-Nz-UDf" firstAttribute="centerY" secondItem="Uvz-Pq-8RL" secondAttribute="centerY" id="tSp-KJ-eWY"/>
                             <constraint firstItem="UfV-UA-k7c" firstAttribute="top" secondItem="5Nz-B7-ny3" secondAttribute="top" id="zWK-sT-0qL"/>
                         </constraints>
                         <variation key="default">
@@ -263,7 +297,10 @@
                         <outlet property="eggCounter" destination="RGt-pX-EjO" id="gky-vh-Gen"/>
                         <outlet property="eggSlider" destination="uhI-Es-CY9" id="3V5-xs-V5g"/>
                         <outlet property="fxVolumeSlider" destination="ztG-8Y-0UG" id="Jar-t3-Jpv"/>
+                        <outlet property="largeButton" destination="gfx-Wd-p5o" id="wUE-FF-rZP"/>
+                        <outlet property="mediumButton" destination="Uvz-Pq-8RL" id="BHT-cr-7Yv"/>
                         <outlet property="musicVolumeSlider" destination="3CR-pt-BBZ" id="q0m-2Y-jyu"/>
+                        <outlet property="smallButton" destination="dzU-Nz-UDf" id="Us4-nJ-lXZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TJ1-di-AgM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -399,17 +436,17 @@
                         <outlet property="tryAgainButton" destination="q0l-A2-WzD" id="rWd-iL-f0y"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="lrN-rY-iw1" userLabel="GameOverTapGesture">
-                    <connections>
-                        <action selector="tapGameOverImage:" destination="BV1-FR-VrT" id="UrN-td-PP8"/>
-                    </connections>
-                </tapGestureRecognizer>
                 <tapGestureRecognizer id="hgR-pb-MfA" userLabel="SoundTapGesture">
                     <connections>
                         <action selector="didTapSoundImageView:" destination="BV1-FR-VrT" id="uKW-Nf-jzc"/>
                     </connections>
                 </tapGestureRecognizer>
+                <tapGestureRecognizer id="lrN-rY-iw1" userLabel="GameOverTapGesture">
+                    <connections>
+                        <action selector="tapGameOverImage:" destination="BV1-FR-VrT" id="UrN-td-PP8"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="vvc-sP-ZAX" userLabel="ExitTapGesture">
                     <connections>
                         <action selector="tapExitImage:" destination="BV1-FR-VrT" id="b2b-cD-eS1"/>
@@ -449,7 +486,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="BaseWindowLong" translatesAutoresizingMaskIntoConstraints="NO" id="qvT-PZ-GJN">
-                                <rect key="frame" x="76.666666666666686" y="16" width="240.00000000000006" height="50"/>
+                                <rect key="frame" x="76.666666666666686" y="16" width="240" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="4Je-n4-vaw"/>
                                     <constraint firstAttribute="width" constant="240" id="bJs-oy-Bm6"/>
@@ -532,6 +569,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="16x16-Button" width="100" height="36"/>
+        <image name="16x16-ButtonPressed" width="100" height="36"/>
+        <image name="30x16-Button" width="100" height="36"/>
+        <image name="30x16-ButtonPressed" width="100" height="36"/>
+        <image name="9x9-Button" width="100" height="36"/>
+        <image name="9x9-ButtonPressed" width="100" height="36"/>
         <image name="BASEBLUE" width="640" height="1136"/>
         <image name="BaseWindowLong" width="500" height="104"/>
         <image name="BaseWindowPortait" width="400" height="500"/>
